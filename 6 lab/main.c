@@ -1,6 +1,5 @@
 #include <stdio.h>
-#include "que.h"
-#include "tree.h"
+#include "Tree.h"
 void printInForms(tnode* root)
 {
     printf("\n\nTree in order\n");
@@ -15,7 +14,8 @@ void print(tnode *tree,int level)
     if(tree)
     {
         print(tree->left,level + 1);
-        for(int i = 0;i< level;i++)
+        int i = 0;
+        for(;i< level;i++)
             printf("   ");
         printf("%d\n",tree->field);
         print(tree->right,level + 1);
