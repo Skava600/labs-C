@@ -15,7 +15,7 @@
 
 int main()
 {
-
+    //ЕЩЕ НЕ ЗАКОНЧИЛ ЛАБОРАТОРНУЮ
     Student *root = NULL;
     int numOfGroup, numOfCourse;
     double averageMark;
