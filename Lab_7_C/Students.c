@@ -1,6 +1,5 @@
 #include "Students.h"
 
-
 /*********ДОБАВИТЬ СТУДЕНТА***********************************************************/
 void AddStudent(Student **root)
 {
@@ -220,7 +219,6 @@ void DeleteStudent(double currentAverageMark, char *firstName, char *lastName, S
         current->prevRank = leftMost->prevRank;
         current->rank = leftMost->rank;
         current->rise = leftMost->rise;
-
         for (int numOfTerms = 0; numOfTerms < current->course * 2; numOfTerms++)
         {
             for (int i = 0; i < MAX_OF_MARKS; i++)
@@ -289,7 +287,6 @@ void ShowStudentInfo(Student* st)
         puts("No matches");
         return;
     }
-
     printf("Name - %s", st->firstName);
     printf("\nSurname - %s", st->surName);
     printf("\nCourse - %d", st->course);
