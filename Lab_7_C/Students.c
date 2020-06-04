@@ -5,7 +5,7 @@
 void AddStudent(Student **root)
 {
     system("cls");
-    int numOfTerms, i;
+    int numOfTerms = 0;
     Student* st = (Student*)malloc(sizeof(Student));
     st->firstName = (char*)malloc(20 * sizeof(char));
     st->surName = (char*)malloc(20 * sizeof(char));
@@ -23,6 +23,7 @@ void AddStudent(Student **root)
     }while(st->course < 1 || st->course > 4);
     printf("Group of %s %s - ", st->firstName, st->surName);
     scanf("%d", &st->group);
+    int i ;
     for (numOfTerms = 0; numOfTerms < st->course * 2; numOfTerms++)
     {
         printf("%d term's marks of %s %s: ", numOfTerms + 1, st->firstName, st->surName);
@@ -31,16 +32,16 @@ void AddStudent(Student **root)
         {
             do
             {
-                scanf("%d", &st->termMarks[numOfTerms].marks[i]);
-            }while(st->termMarks[numOfTerms].marks[i] < 0 || st->termMarks[numOfTerms].marks[i] > 10);
-            st->termMarks[numOfTerms].averageMark += st->termMarks[numOfTerms].marks[i];
+                scanf("%d", &st->marks[numOfTerms][i]);
+            }while(st->marks[numOfTerms][i] < 0 || st->marks[numOfTerms][i] > 10);
+            st->averageMark[numOfTerms] += st->marks[numOfTerms][i];
         }
-        st->termMarks[numOfTerms].averageMark /= MAX_OF_MARKS;
-        st->totalAverageMark += st->termMarks[numOfTerms].averageMark;
+        st->averageMark[numOfTerms] /= MAX_OF_MARKS;
+        st->totalAverageMark += st->averageMark[numOfTerms];
     }
     st->totalAverageMark /= numOfTerms;
-    st->currentAverageMark = st->termMarks[numOfTerms - 1].averageMark;
-    st->rise = st->termMarks[numOfTerms - 1].averageMark - st->termMarks[numOfTerms - 2].averageMark;
+    st->currentAverageMark = st->averageMark[numOfTerms - 1];
+    st->rise = st->averageMark[numOfTerms - 1] - st->averageMark[numOfTerms - 2];
 
     AddNode(root, st);
 
@@ -75,7 +76,7 @@ void ReadFromFile(Student **root, FILE *fp)
 {
     while (!feof(fp))
     {
-        int numOfTerms, i;
+        int numOfTerms = 0;
         Student *st = (Student*)malloc(sizeof(Student));
         st->firstName = (char*)malloc(20 * sizeof(char));
         st->surName = (char*)malloc(20 * sizeof(char));
@@ -93,17 +94,17 @@ void ReadFromFile(Student **root, FILE *fp)
         fscanf(fp, "%d", &st->group);
         for (numOfTerms = 0; numOfTerms < st->course * 2; numOfTerms++)
         {
-            for ( i = 0; i < MAX_OF_MARKS; i++)
+            for (int i = 0; i < MAX_OF_MARKS; i++)
             {
-                fscanf(fp, "%d", &st->termMarks[numOfTerms].marks[i]);
-                st->termMarks[numOfTerms].averageMark += st->termMarks[numOfTerms].marks[i];
+                fscanf(fp, "%d", &st->marks[numOfTerms][i]);
+                st->averageMark[numOfTerms] += st->marks[numOfTerms][i];
             }
-            st->termMarks[numOfTerms].averageMark /= MAX_OF_MARKS;
-            st->totalAverageMark += st->termMarks[numOfTerms].averageMark;
+            st->averageMark[numOfTerms] /= MAX_OF_MARKS;
+            st->totalAverageMark += st->averageMark[numOfTerms];
         }
         st->totalAverageMark /= numOfTerms;
-        st->currentAverageMark = st->termMarks[numOfTerms - 1].averageMark;
-        st->rise = st->termMarks[numOfTerms - 1].averageMark - st->termMarks[numOfTerms - 2].averageMark;
+        st->currentAverageMark = st->averageMark[numOfTerms - 1];
+        st->rise = st->averageMark[numOfTerms - 1] - st->averageMark[numOfTerms - 2];
 
         fgetc(fp);
         AddNode(root, st);
@@ -118,15 +119,16 @@ void WriteToFile(Student *root, FILE *fp)
 {
     if (root)
     {
+        int numOfTerms, i;
         WriteToFile(root->right, fp);
 
         fprintf(fp, "%s %s %d %d", root->firstName, root->surName, root->course, root->group);
-        int numOfTerms, i;
-        for (numOfTerms = 0; numOfTerms < root->course * 2; numOfTerms++)
+
+        for ( numOfTerms = 0; numOfTerms < root->course * 2; numOfTerms++)
         {
             for (i = 0; i < MAX_OF_MARKS; i++)
             {
-                fprintf(fp, " %d", root->termMarks[numOfTerms].marks[i]);
+                fprintf(fp, " %d", root->marks[numOfTerms][i]);
             }
         }
         fprintf(fp, "\n");
@@ -218,14 +220,14 @@ void DeleteStudent(double currentAverageMark, char *firstName, char *lastName, S
         current->prevRank = leftMost->prevRank;
         current->rank = leftMost->rank;
         current->rise = leftMost->rise;
-        int numOfTerms, i;
-        for (numOfTerms = 0; numOfTerms < current->course * 2; numOfTerms++)
+
+        for (int numOfTerms = 0; numOfTerms < current->course * 2; numOfTerms++)
         {
-            for (i = 0; i < MAX_OF_MARKS; i++)
+            for (int i = 0; i < MAX_OF_MARKS; i++)
             {
-                current->termMarks[numOfTerms].marks[i] = leftMost->termMarks[numOfTerms].marks[i];
+                current->marks[numOfTerms][i] = leftMost->marks[numOfTerms][i];
             }
-            current->termMarks[numOfTerms].averageMark = leftMost->termMarks[numOfTerms].averageMark;
+            current->averageMark[numOfTerms] = leftMost->averageMark[numOfTerms];
         }
         current->currentAverageMark = leftMost->currentAverageMark;
     }
@@ -265,14 +267,14 @@ void ShowStudentMarks(Student *st)
         return;
     }
     printf("%s's marks\n", st->firstName);
-    int numOfTerms, i;
-    for ( numOfTerms = 0; numOfTerms < st->course * 2; numOfTerms++)
+
+    for (int numOfTerms = 0; numOfTerms < st->course * 2; numOfTerms++)
     {
         printf("%d term's marks: ", numOfTerms + 1);
 
-        for ( i = 0; i < MAX_OF_MARKS; i++)
+        for (int i = 0; i < MAX_OF_MARKS; i++)
         {
-            printf("%d ", st->termMarks[numOfTerms].marks[i]);
+            printf("%d ", st->marks[numOfTerms][i]);
         }
         puts("");
     }
@@ -294,14 +296,14 @@ void ShowStudentInfo(Student* st)
     printf("\nGroup - %d", st->group);
     printf("\nTotal average mark - %.2f", st->totalAverageMark);
     printf("\nCurrent average mark - %.2f", st->currentAverageMark);
-    int numOfTerm, i;
-    for (numOfTerm = 0; numOfTerm < st->course * 2; numOfTerm++)
+
+    for (int numOfTerm = 0; numOfTerm < st->course * 2; numOfTerm++)
     {
         printf("\n%d term's marks: ", numOfTerm + 1);
 
-        for ( i = 0; i < MAX_OF_MARKS; i++)
+        for (int i = 0; i < MAX_OF_MARKS; i++)
         {
-            printf("%d ", st->termMarks[numOfTerm].marks[i]);
+            printf("%d ", st->marks[numOfTerm][i]);
         }
     }
 }
@@ -479,10 +481,10 @@ void BalanceVine(Student **root)
 {
     Student *black = NULL;
     Student *red = *root;
-    int n, i;
-    for (n = 1; n < log(GetSize(*root)) / log(2) - 0.5; n++)
+
+    for (int n = 1; n < log(GetSize(*root)) / log(2) - 0.5; n++)
     {
-        for (i = 0; i < GetSize(*root) / pow(2, n) - 1; i++)
+        for (int i = 0; i < GetSize(*root) / pow(2, n) - 1; i++)
         {
             RotateRight(&black, &red, root);
             black = red;

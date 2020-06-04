@@ -9,18 +9,19 @@
 
 typedef struct TermMarks
 {
-    int marks[MAX_OF_MARKS];
-    double averageMark;
+
+
 } TermMarks;
 
 typedef struct Student
 {
     char *firstName;
     char *surName;
-    struct TermMarks termMarks[8];
     double currentAverageMark;
     double totalAverageMark;
     double rise;
+    double averageMark[8];
+    int marks[8][MAX_OF_MARKS];
     int group;
     int course;
     int rank;
