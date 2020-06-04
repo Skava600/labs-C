@@ -16,7 +16,7 @@ typedef struct TermMarks
 typedef struct Student
 {
     char *firstName;
-    char *lastName;
+    char *surName;
     struct TermMarks termMarks[8];
     double currentAverageMark;
     double totalAverageMark;
@@ -39,7 +39,6 @@ void DeleteStudent(double averageMark, char *firstName, char *lastName, Student 
 Student* FindStudent(double averageMark, char *firstName, char *lastName, Student *root);
 void ShowStudentMarks(Student *st);
 void ShowStudentInfo(Student *st);
-void SetRanks(Student **root, char field, int fieldValue);
 void PrintGroupRating(Student *root, int group);
 void PrintCourseRating(Student *root, int course);
 
@@ -53,12 +52,4 @@ void MakeVine(Student **root);
 void BalanceVine(Student **root);
 void RotateLeft(Student **parrent, Student **current, Student **root);
 void RotateRight(Student **parrent, Student **current, Student **root);
-//Student** rotateleft(Student** q);
-//Student** rotateright(Student** p);
-//int CalcDaughters(Student** tree, int *Count);
-//void MoveTree(Student** p);
-//void fixheight(Student** p);
-//unsigned char height(Student** p);
-//Student** balance(Student** p);
-//int bfactor(Student** p);
 #endif // STUDENTS_H

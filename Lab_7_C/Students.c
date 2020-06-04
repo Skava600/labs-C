@@ -8,30 +8,24 @@ void AddStudent(Student **root)
     int numOfTerms = 0;
     Student* st = (Student*)malloc(sizeof(Student));
     st->firstName = (char*)malloc(20 * sizeof(char));
-    st->lastName = (char*)malloc(20 * sizeof(char));
+    st->surName = (char*)malloc(20 * sizeof(char));
     st->rank = 0;
     st->prevRank = 0;
     st->totalAverageMark = 0;
     printf("First name - ");
     scanf("%s", st->firstName);
     printf("Last name of %s- ", st->firstName);
-    scanf("%s", st->lastName);
+    scanf("%s", st->surName);
     do
     {
-        printf("Course of %s %s- ", st->firstName, st->lastName);
+        printf("Course of %s %s- ", st->firstName, st->surName);
         scanf("%d", &st->course);
     }while(st->course < 1 || st->course > 4);
-    printf("Group of %s %s - ", st->firstName, st->lastName);
+    printf("Group of %s %s - ", st->firstName, st->surName);
     scanf("%d", &st->group);
-
     for (numOfTerms = 0; numOfTerms < st->course * 2; numOfTerms++)
     {
-        st->termMarks[numOfTerms].averageMark = 0;
-    }
-
-    for (numOfTerms = 0; numOfTerms < st->course * 2; numOfTerms++)
-    {
-        printf("%d term's marks of %s %s: ", numOfTerms + 1, st->firstName, st->lastName);
+        printf("%d term's marks of %s %s: ", numOfTerms + 1, st->firstName, st->surName);
 
         for (int i = 0; i < MAX_OF_MARKS; i++)
         {
@@ -66,6 +60,7 @@ void AddNode(Student **root, Student *student)
         if ((*root)->currentAverageMark > student->currentAverageMark)
         {
             AddNode(&(*root)->left, student);
+
         }
         else
         {
@@ -82,9 +77,8 @@ void ReadFromFile(Student **root, FILE *fp)
     {
         int numOfTerms = 0;
         Student *st = (Student*)malloc(sizeof(Student));
-
         st->firstName = (char*)malloc(20 * sizeof(char));
-        st->lastName = (char*)malloc(20 * sizeof(char));
+        st->surName = (char*)malloc(20 * sizeof(char));
         st->rank = 0;
         st->prevRank = 0;
         st->totalAverageMark = 0;
@@ -94,15 +88,9 @@ void ReadFromFile(Student **root, FILE *fp)
             SetRanks(root, 'a', 0);
             return;
         }
-        fscanf(fp, "%s", st->lastName);
+        fscanf(fp, "%s", st->surName);
         fscanf(fp, "%d", &st->course);
         fscanf(fp, "%d", &st->group);
-
-        for (numOfTerms = 0; numOfTerms < st->course * 2; numOfTerms++)
-        {
-            st->termMarks[numOfTerms].averageMark = 0;
-        }
-
         for (numOfTerms = 0; numOfTerms < st->course * 2; numOfTerms++)
         {
             for (int i = 0; i < MAX_OF_MARKS; i++)
@@ -132,7 +120,7 @@ void WriteToFile(Student *root, FILE *fp)
     {
         WriteToFile(root->right, fp);
 
-        fprintf(fp, "%s %s %d %d %f %f", root->firstName, root->lastName, root->course, root->group, root->currentAverageMark, root->rise);
+        fprintf(fp, "%s %s %d %d", root->firstName, root->surName, root->course, root->group);
 
         for (int numOfTerms = 0; numOfTerms < root->course * 2; numOfTerms++)
         {
@@ -159,7 +147,7 @@ void DeleteStudent(double currentAverageMark, char *firstName, char *lastName, S
     while (current)
     {
         if (!strcmp(current->firstName, firstName)
-            && !strcmp(current->lastName, lastName)
+            && !strcmp(current->surName, lastName)
             && current->currentAverageMark == currentAverageMark)
         {
             break;
@@ -226,7 +214,7 @@ void DeleteStudent(double currentAverageMark, char *firstName, char *lastName, S
         current->totalAverageMark = leftMost->totalAverageMark;
         current->firstName = leftMost->firstName;
         current->group = leftMost->group;
-        current->lastName = leftMost->lastName;
+        current->surName = leftMost->surName;
         current->prevRank = leftMost->prevRank;
         current->rank = leftMost->rank;
         current->rise = leftMost->rise;
@@ -251,7 +239,7 @@ Student* FindStudent(double averageMark, char *firstName, char *lastName, Studen
 {
     if (root)
     {
-        if (!strcmp(root->firstName, firstName) && !strcmp(root->lastName, lastName))
+        if (!strcmp(root->firstName, firstName) && !strcmp(root->surName, lastName))
         {
             return root;
         }
@@ -265,7 +253,6 @@ Student* FindStudent(double averageMark, char *firstName, char *lastName, Studen
         }
         else return NULL;
     }
-    return NULL;
 }
 //****************************************************************************
 
@@ -302,7 +289,7 @@ void ShowStudentInfo(Student* st)
     }
 
     printf("Name - %s", st->firstName);
-    printf("\nSurname - %s", st->lastName);
+    printf("\nSurname - %s", st->surName);
     printf("\nCourse - %d", st->course);
     printf("\nGroup - %d", st->group);
     printf("\nTotal average mark - %.2f", st->totalAverageMark);
@@ -354,7 +341,7 @@ void PrintTree(Student *root)
             printf("(%+d)", root->prevRank - root->rank);
 
         SetConsoleTextAttribute(hConsole, (WORD)((0 << 4) | 15));
-        printf(". %s %s, course %d group %d, average mark - %.2f", root->firstName, root->lastName, root->course, root->group, root->currentAverageMark);
+        printf(". %s %s, course %d group %d, average mark - %.2f", root->firstName, root->surName, root->course, root->group, root->currentAverageMark);
 
         if (root->rise > 0)
         {
@@ -388,7 +375,7 @@ void PrintGroupRating(Student* root, int group)
         PrintGroupRating(root->right, group);
         if (root->group == group)
         {
-            printf("%d. %s %s, course %d group %d, average mark - %.2f\n", root->rank, root->firstName, root->lastName, root->course, root->group, root->currentAverageMark);
+            printf("%d. %s %s, course %d group %d, average mark - %.2f\n", root->rank, root->firstName, root->surName, root->course, root->group, root->currentAverageMark);
         }
         PrintGroupRating(root->left, group);
     }
@@ -403,7 +390,7 @@ void PrintCourseRating(Student *root, int course)
         PrintCourseRating(root->right, course);
         if (root->course == course)
         {
-            printf("%d. %s %s, course %d group %d, average mark - %.2f\n", root->rank, root->firstName, root->lastName, root->course, root->group, root->currentAverageMark);
+            printf("%d. %s %s, course %d group %d, average mark - %.2f\n", root->rank, root->firstName, root->surName, root->course, root->group, root->currentAverageMark);
         }
         PrintCourseRating(root->left, course);
     }
@@ -416,7 +403,7 @@ void DeleteTree(Student *root)
         DeleteTree(root->left);
         DeleteTree(root->right);
         free(root->firstName);
-        free(root->lastName);
+        free(root->surName);
         free(root);
     }
 }
@@ -506,7 +493,7 @@ void BalanceVine(Student **root)
     }
 }
 
-//левый поворот для составления лозы
+//*********************ЛЕВЫЙ ПОВОРОТ *******************************
 void RotateLeft(Student **parrent, Student **current, Student **root)
 {
     Student* subR = (*current)->right;
@@ -522,8 +509,9 @@ void RotateLeft(Student **parrent, Student **current, Student **root)
     }
     *current = subR;
 }
+//*********************************************************************
 
-//Правый поворот для балансировки лозы
+//****************ПРАВЫЙ ПОВОРОТ**************************************
 void RotateRight(Student **parrent, Student **current, Student **root)
 {
     Student* subL = (*current)->left;
@@ -539,4 +527,4 @@ void RotateRight(Student **parrent, Student **current, Student **root)
     }
     *current = subL;
 }
-
+//************************************************************************
