@@ -88,9 +88,15 @@ void ReadFromFile(Student **root, FILE *fp)
             SetRanks(root, 'a', 0);
             return;
         }
+
+
         fscanf(fp, "%s", st->surName);
         fscanf(fp, "%d", &st->course);
         fscanf(fp, "%d", &st->group);
+        for (numOfTerms = 0; numOfTerms < st->course * 2; numOfTerms++)
+        {
+            st->averageMark[numOfTerms] = 0;
+        }
         for (numOfTerms = 0; numOfTerms < st->course * 2; numOfTerms++)
         {
             for (int i = 0; i < MAX_OF_MARKS; i++)

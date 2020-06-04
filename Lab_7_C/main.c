@@ -50,6 +50,8 @@ int main()
         {
 
         case 1:
+            DeleteTree(root);
+            root = NULL;
             fin = fopen("Students.txt", "r");
             ReadFromFile(&root, fin);
             break;

@@ -7,6 +7,7 @@
 #include <windows.h>
 #include <math.h>
 
+
 typedef struct Student
 {
     char *firstName;
