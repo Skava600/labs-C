@@ -7,12 +7,6 @@
 #include <windows.h>
 #include <math.h>
 
-typedef struct TermMarks
-{
-
-
-} TermMarks;
-
 typedef struct Student
 {
     char *firstName;
