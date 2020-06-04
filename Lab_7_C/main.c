@@ -120,7 +120,7 @@ int main()
             DeleteStudent(averageMark, firstName, lastName, &root);
             break;
 
-        case 9:					//удаление всех студентов
+        case 9:
             system("cls");
             DeleteTree(root);
             root = NULL;

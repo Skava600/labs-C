@@ -31,8 +31,9 @@ typedef struct Student
     struct Student *parent;
 } Student;
 
-//treatment of students
+/*treatment of students*/
 void AddStudent(Student **root);
+void SetRanks(Student **root, char field, int fieldValue);
 void ReadFromFile(Student **root, FILE *fp);
 void WriteToFile(Student *root, FILE *fp);
 void DeleteStudent(double averageMark, char *firstName, char *lastName, Student **root);
@@ -42,7 +43,7 @@ void ShowStudentInfo(Student *st);
 void PrintGroupRating(Student *root, int group);
 void PrintCourseRating(Student *root, int course);
 
-//treatment with tree
+/*treatment with tree*/
 int GetSize(Student *root);
 void AddNode(Student **root, Student *student);
 void PrintTree(Student *root);
@@ -52,4 +53,4 @@ void MakeVine(Student **root);
 void BalanceVine(Student **root);
 void RotateLeft(Student **parrent, Student **current, Student **root);
 void RotateRight(Student **parrent, Student **current, Student **root);
-#endif // STUDENTS_H
+#endif /* STUDENTS_H*/

@@ -1,11 +1,11 @@
 #include "Students.h"
 
 
-//*********ДОБАВИТЬ СТУДЕНТА***********************************************************
+/*********ДОБАВИТЬ СТУДЕНТА***********************************************************/
 void AddStudent(Student **root)
 {
     system("cls");
-    int numOfTerms = 0;
+    int numOfTerms, i;
     Student* st = (Student*)malloc(sizeof(Student));
     st->firstName = (char*)malloc(20 * sizeof(char));
     st->surName = (char*)malloc(20 * sizeof(char));
@@ -27,7 +27,7 @@ void AddStudent(Student **root)
     {
         printf("%d term's marks of %s %s: ", numOfTerms + 1, st->firstName, st->surName);
 
-        for (int i = 0; i < MAX_OF_MARKS; i++)
+        for ( i = 0; i < MAX_OF_MARKS; i++)
         {
             do
             {
@@ -46,7 +46,7 @@ void AddStudent(Student **root)
 
     SetRanks(root, 'a', 0);
 }
-//*********ДОБАВЛЕНИЕ СТУДЕНТА В ДЕРЕВО*****************************************
+/*********ДОБАВЛЕНИЕ СТУДЕНТА В ДЕРЕВО******************************************/
 void AddNode(Student **root, Student *student)
 {
     if (!(*root))
@@ -68,14 +68,14 @@ void AddNode(Student **root, Student *student)
         }
     }
 }
-//******************************************************************
+/*******************************************************************/
 
-//***************ЧТЕНИЕ ИЗ ФАЙЛА СТУДЕНТОВ**************************
+/***************ЧТЕНИЕ ИЗ ФАЙЛА СТУДЕНТОВ***************************/
 void ReadFromFile(Student **root, FILE *fp)
 {
     while (!feof(fp))
     {
-        int numOfTerms = 0;
+        int numOfTerms, i;
         Student *st = (Student*)malloc(sizeof(Student));
         st->firstName = (char*)malloc(20 * sizeof(char));
         st->surName = (char*)malloc(20 * sizeof(char));
@@ -93,7 +93,7 @@ void ReadFromFile(Student **root, FILE *fp)
         fscanf(fp, "%d", &st->group);
         for (numOfTerms = 0; numOfTerms < st->course * 2; numOfTerms++)
         {
-            for (int i = 0; i < MAX_OF_MARKS; i++)
+            for ( i = 0; i < MAX_OF_MARKS; i++)
             {
                 fscanf(fp, "%d", &st->termMarks[numOfTerms].marks[i]);
                 st->termMarks[numOfTerms].averageMark += st->termMarks[numOfTerms].marks[i];
@@ -111,9 +111,9 @@ void ReadFromFile(Student **root, FILE *fp)
 
     SetRanks(root, 'a', 0);
 }
-//******************************************************************
+/*******************************************************************/
 
-//********ЗАПИСЬ В ФАЙЛ*********************************************
+/********ЗАПИСЬ В ФАЙЛ**********************************************/
 void WriteToFile(Student *root, FILE *fp)
 {
     if (root)
@@ -121,10 +121,10 @@ void WriteToFile(Student *root, FILE *fp)
         WriteToFile(root->right, fp);
 
         fprintf(fp, "%s %s %d %d", root->firstName, root->surName, root->course, root->group);
-
-        for (int numOfTerms = 0; numOfTerms < root->course * 2; numOfTerms++)
+        int numOfTerms, i;
+        for (numOfTerms = 0; numOfTerms < root->course * 2; numOfTerms++)
         {
-            for (int i = 0; i < MAX_OF_MARKS; i++)
+            for (i = 0; i < MAX_OF_MARKS; i++)
             {
                 fprintf(fp, " %d", root->termMarks[numOfTerms].marks[i]);
             }
@@ -134,10 +134,10 @@ void WriteToFile(Student *root, FILE *fp)
         WriteToFile(root->left, fp);
     }
 }
-//**********************************************************
+/***********************************************************/
 
 
-//***********УДАЛЕНИЕ СТУДЕНТА******************************
+/***********УДАЛЕНИЕ СТУДЕНТА*******************************/
 void DeleteStudent(double currentAverageMark, char *firstName, char *lastName, Student **root)
 {
     Student *current = *root;
@@ -218,10 +218,10 @@ void DeleteStudent(double currentAverageMark, char *firstName, char *lastName, S
         current->prevRank = leftMost->prevRank;
         current->rank = leftMost->rank;
         current->rise = leftMost->rise;
-
-        for (int numOfTerms = 0; numOfTerms < current->course * 2; numOfTerms++)
+        int numOfTerms, i;
+        for (numOfTerms = 0; numOfTerms < current->course * 2; numOfTerms++)
         {
-            for (int i = 0; i < MAX_OF_MARKS; i++)
+            for (i = 0; i < MAX_OF_MARKS; i++)
             {
                 current->termMarks[numOfTerms].marks[i] = leftMost->termMarks[numOfTerms].marks[i];
             }
@@ -234,7 +234,7 @@ void DeleteStudent(double currentAverageMark, char *firstName, char *lastName, S
     free(deletingStudent);
 }
 
-//***********ПОИСК СТУДЕНТА ПО ИМЕНИ ФАМИЛИИ И СРЕДНЕЙ ОЦЕНКЕ***********************
+/***********ПОИСК СТУДЕНТА ПО ИМЕНИ ФАМИЛИИ И СРЕДНЕЙ ОЦЕНКЕ************************/
 Student* FindStudent(double averageMark, char *firstName, char *lastName, Student *root)
 {
     if (root)
@@ -254,9 +254,9 @@ Student* FindStudent(double averageMark, char *firstName, char *lastName, Studen
         else return NULL;
     }
 }
-//****************************************************************************
+/*****************************************************************************/
 
-//******************ВЫВЕСТИ ОЦЕНКИ СТУДЕНТА***********************************
+/******************ВЫВЕСТИ ОЦЕНКИ СТУДЕНТА************************************/
 void ShowStudentMarks(Student *st)
 {
     if (!st)
@@ -265,21 +265,21 @@ void ShowStudentMarks(Student *st)
         return;
     }
     printf("%s's marks\n", st->firstName);
-
-    for (int numOfTerms = 0; numOfTerms < st->course * 2; numOfTerms++)
+    int numOfTerms, i;
+    for ( numOfTerms = 0; numOfTerms < st->course * 2; numOfTerms++)
     {
         printf("%d term's marks: ", numOfTerms + 1);
 
-        for (int i = 0; i < MAX_OF_MARKS; i++)
+        for ( i = 0; i < MAX_OF_MARKS; i++)
         {
             printf("%d ", st->termMarks[numOfTerms].marks[i]);
         }
         puts("");
     }
 }
-//*******************************************************************************
+/********************************************************************************/
 
-//***********ПОЛНАЯ  ИНФОРМАЦИЯ О СТУДЕНТЕ*****************************************
+/***********ПОЛНАЯ  ИНФОРМАЦИЯ О СТУДЕНТЕ******************************************/
 void ShowStudentInfo(Student* st)
 {
     if (!st)
@@ -294,20 +294,20 @@ void ShowStudentInfo(Student* st)
     printf("\nGroup - %d", st->group);
     printf("\nTotal average mark - %.2f", st->totalAverageMark);
     printf("\nCurrent average mark - %.2f", st->currentAverageMark);
-
-    for (int numOfTerm = 0; numOfTerm < st->course * 2; numOfTerm++)
+    int numOfTerm, i;
+    for (numOfTerm = 0; numOfTerm < st->course * 2; numOfTerm++)
     {
         printf("\n%d term's marks: ", numOfTerm + 1);
 
-        for (int i = 0; i < MAX_OF_MARKS; i++)
+        for ( i = 0; i < MAX_OF_MARKS; i++)
         {
             printf("%d ", st->termMarks[numOfTerm].marks[i]);
         }
     }
 }
-//*************************************************************
+/**************************************************************/
 
-//***********РАЗМЕР ДЕРЕВА*************************************
+/***********РАЗМЕР ДЕРЕВА**************************************/
 int GetSize(Student *root)
 {
     if (root)
@@ -316,9 +316,9 @@ int GetSize(Student *root)
     }
     return 0;
 }
-//****************************************************************
+/*****************************************************************/
 
-//***********ВЫВЕСТИ ДЕРЕВО**************************************
+/***********ВЫВЕСТИ ДЕРЕВО***************************************/
 void PrintTree(Student *root)
 {
     if (root)
@@ -365,9 +365,9 @@ void PrintTree(Student *root)
         PrintTree(root->left);
     }
 }
-//***************************************************************
+/****************************************************************/
 
-//************ВЫВЕСТИ РЕЙТИНГ ПО ГРУППЕ**************************
+/************ВЫВЕСТИ РЕЙТИНГ ПО ГРУППЕ***************************/
 void PrintGroupRating(Student* root, int group)
 {
     if (root)
@@ -380,9 +380,9 @@ void PrintGroupRating(Student* root, int group)
         PrintGroupRating(root->left, group);
     }
 }
-//******************************************************************
+/*******************************************************************/
 
-//**********ВЫВЕСТИ РЕЙТИНГ ПО КУРСУ********************************
+/**********ВЫВЕСТИ РЕЙТИНГ ПО КУРСУ*********************************/
 void PrintCourseRating(Student *root, int course)
 {
     if (root)
@@ -395,7 +395,7 @@ void PrintCourseRating(Student *root, int course)
         PrintCourseRating(root->left, course);
     }
 }
-//*************УДАЛИТЬ ДЕРЕВА******************************
+/*************УДАЛИТЬ ДЕРЕВА*******************************/
 void DeleteTree(Student *root)
 {
     if (root)
@@ -408,15 +408,15 @@ void DeleteTree(Student *root)
     }
 }
 
-//**************БАЛАНСИРОВКА ДЕРЕВА****************************
+/**************БАЛАНСИРОВКА ДЕРЕВА*****************************/
 void BalanceTree(Student **root)
 {
     MakeVine(root);
     BalanceVine(root);
 }
-//***************************************************************
+/****************************************************************/
 
-//********НАЗНАЧИТЬ МЕСТО В РЕЙТИНГЕ*****************************
+/********НАЗНАЧИТЬ МЕСТО В РЕЙТИНГЕ******************************/
 void SetRanks(Student **root, char field, int fieldValue)
 {
     MakeVine(root);
@@ -451,9 +451,9 @@ void SetRanks(Student **root, char field, int fieldValue)
     }
     BalanceVine(root);
 }
-//*********************************************************
+/*********************************************************/
 
-//**********ОПРЕДЕЛЕНИЕ ЛОЗЫ*******************************
+/**********ОПРЕДЕЛЕНИЕ ЛОЗЫ*******************************/
 void MakeVine(Student **root)
 {
     Student *current = *root;
@@ -472,17 +472,17 @@ void MakeVine(Student **root)
         }
     }
 }
-//**********************************************************
+/**********************************************************/
 
-//*****************БАЛАНСИРОВКА ЛОЗЫ*********************
+/*****************БАЛАНСИРОВКА ЛОЗЫ*********************/
 void BalanceVine(Student **root)
 {
     Student *black = NULL;
     Student *red = *root;
-
-    for (int n = 1; n < log(GetSize(*root)) / log(2) - 0.5; n++)
+    int n, i;
+    for (n = 1; n < log(GetSize(*root)) / log(2) - 0.5; n++)
     {
-        for (int i = 0; i < GetSize(*root) / pow(2, n) - 1; i++)
+        for (i = 0; i < GetSize(*root) / pow(2, n) - 1; i++)
         {
             RotateRight(&black, &red, root);
             black = red;
@@ -493,7 +493,7 @@ void BalanceVine(Student **root)
     }
 }
 
-//*********************ЛЕВЫЙ ПОВОРОТ *******************************
+/*********************ЛЕВЫЙ ПОВОРОТ *******************************/
 void RotateLeft(Student **parrent, Student **current, Student **root)
 {
     Student* subR = (*current)->right;
@@ -509,9 +509,9 @@ void RotateLeft(Student **parrent, Student **current, Student **root)
     }
     *current = subR;
 }
-//*********************************************************************
+/*********************************************************************/
 
-//****************ПРАВЫЙ ПОВОРОТ**************************************
+/****************ПРАВЫЙ ПОВОРОТ**************************************/
 void RotateRight(Student **parrent, Student **current, Student **root)
 {
     Student* subL = (*current)->left;
@@ -527,4 +527,4 @@ void RotateRight(Student **parrent, Student **current, Student **root)
     }
     *current = subL;
 }
-//************************************************************************
+/************************************************************************/
